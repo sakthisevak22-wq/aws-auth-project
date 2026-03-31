@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/login.css";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -16,7 +18,7 @@ export default function ForgotPassword() {
     const sendOtp = async () => {
         try {
             const res = await fetch(
-                "http://localhost:8080/auth/forgot-password",
+                `${API_BASE}/auth/forgot-password`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -40,7 +42,7 @@ export default function ForgotPassword() {
     const resetPassword = async () => {
         try {
             const res = await fetch(
-                "http://localhost:8080/auth/confirm-forgot-password",
+                `${API_BASE}/auth/confirm-forgot-password`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

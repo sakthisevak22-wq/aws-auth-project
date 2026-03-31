@@ -1,7 +1,7 @@
-const BASE_URL = "http://localhost:8080/auth";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export async function loginApi(email, password) {
-    const res = await fetch(`${BASE_URL}/login`, {
+    const res = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -13,7 +13,7 @@ export async function loginApi(email, password) {
 }
 
 export async function newPasswordApi(email, newPassword, sessionToken) {
-    const res = await fetch(`${BASE_URL}/new-password`, {
+    const res = await fetch(`${API_BASE}/auth/new-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, newPassword, sessionToken })
@@ -25,7 +25,7 @@ export async function newPasswordApi(email, newPassword, sessionToken) {
 }
 
 export async function forgotPasswordApi(email) {
-    const res = await fetch(`${BASE_URL}/forgot-password`, {
+    const res = await fetch(`${API_BASE}/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
@@ -35,7 +35,7 @@ export async function forgotPasswordApi(email) {
 }
 
 export async function confirmForgotPasswordApi(email, otp, newPassword) {
-    const res = await fetch(`${BASE_URL}/confirm-forgot-password`, {
+    const res = await fetch(`${API_BASE}/auth/confirm-forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp, newPassword })
@@ -45,7 +45,7 @@ export async function confirmForgotPasswordApi(email, otp, newPassword) {
 }
 
 export async function logoutApi(accessToken) {
-    await fetch(`${BASE_URL}/logout`, {
+    await fetch(`${API_BASE}/auth/logout`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${accessToken}`
@@ -54,7 +54,7 @@ export async function logoutApi(accessToken) {
 }
 
 export async function addUserApi(payload) {
-    const res = await fetch(`${BASE_URL}/add-user`, {
+    const res = await fetch(`${API_BASE}/auth/add-user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

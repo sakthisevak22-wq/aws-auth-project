@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/login.css";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function NewPassword() {
     const [newPassword, setNewPassword] = useState("");
@@ -18,7 +19,7 @@ export default function NewPassword() {
         }
 
         try {
-            const res = await fetch("http://localhost:8080/auth/new-password", {
+            const res = await fetch(`${API_BASE}/auth/new-password`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

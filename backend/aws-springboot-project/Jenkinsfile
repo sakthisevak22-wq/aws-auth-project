@@ -2,53 +2,66 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME = "aws-backend"
-        CONTAINER_NAME = "aws-backend-container"
+        IMAGE_NAME = "backend-container"
+        CONTAINER_NAME = "backend-container"
         PORT = "8080"
     }
 
     stages {
 
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Backend JAR') {
+            steps {
+                dir('backend/aws-springboot-project') {
+                    sh  'mvn clean install -Dmaven.test.skip=true'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 dir('backend/aws-springboot-project') {
-                    sh '''
-                      echo "📦 Current directory:"
-                      pwd
-                      echo "📁 Files:"
-                      ls -la
-                      echo "🐳 Building Docker image"
-                      docker build -t $APP_NAME .
-                    '''
+                    sh "docker build -t ${IMAGE_NAME}:latest ."
                 }
             }
         }
 
         stage('Stop Old Container') {
             steps {
-                sh 'docker rm -f $CONTAINER_NAME || true'
+                sh """
+                docker stop ${CONTAINER_NAME} || true
+                docker rm ${CONTAINER_NAME} || true
+                """
+            }
+        }
+        stage('Run Backend Container') {
+            steps {
+                dir('backend/aws-springboot-project') {
+                   sh '''
+                   docker run -d \
+                   --name backend-container \
+                   --env-file .env \
+                   --network aws-net \
+                   -p 8080:8080 \
+                   backend-container:latest
+                   '''
+                }
             }
         }
 
-        stage('Run Container') {
-            steps {
-                sh '''
-                  docker run -d \
-                    --name $CONTAINER_NAME \
-                    --network aws-network \
-                    -p $PORT:$PORT \
-                    $APP_NAME
-                '''
-            }
-        }
     }
 
     post {
         success {
-            echo "✅ Backend deployed successfully!"
+            echo "✅ Backend deployed successfully"
         }
         failure {
-            echo "❌ Deployment failed"
+            echo "❌ Backend deployment failed"
         }
     }
 }

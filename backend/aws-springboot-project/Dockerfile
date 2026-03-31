@@ -7,9 +7,7 @@ COPY pom.xml .
 
 COPY src ./src
 
-# IMPORTANT: batch mode + no transfer progress
-RUN mvn -B -ntp clean install -DskipTests
-
+RUN mvn clean package -Dmaven.test.skip=true
 # ---------- RUN STAGE ----------
 FROM eclipse-temurin:17-jre
 

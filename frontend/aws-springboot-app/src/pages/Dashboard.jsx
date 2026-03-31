@@ -1,6 +1,7 @@
 import { useAuth } from "../hooks/useAuth.jsx";
 import { useState } from "react";
 import "../assets/login.css";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function Dashboard() {
     const { logout } = useAuth();
@@ -17,7 +18,7 @@ export default function Dashboard() {
         setMsg("");
 
         try {
-            const res = await fetch("http://localhost:8080/auth/add-user", {
+            const res = await fetch(`${API_BASE}/auth/add-user`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -21,13 +21,16 @@ public class CognitoService {
     private final SecretHashUtil secretHashUtil;
     private final UserTokenRepository userTokenRepository;
 
-    @Value("${aws.cognito.userPoolId}")
+    @Value("${aws.region}")
+    private String region;
+
+    @Value("${aws.cognito.user-pool-id}")
     private String userPoolId;
 
-    @Value("${aws.cognito.clientId}")
+    @Value("${aws.cognito.client-id}")
     private String clientId;
 
-    @Value("${aws.cognito.clientSecret}")
+    @Value("${aws.cognito.client-secret}")
     private String clientSecret;
 
     // =====================================================

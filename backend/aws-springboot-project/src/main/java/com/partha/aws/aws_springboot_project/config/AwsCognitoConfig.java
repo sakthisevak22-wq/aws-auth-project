@@ -13,6 +13,15 @@ public class AwsCognitoConfig {
     @Value("${aws.region}")
     private String region;
 
+    @Value("${aws.cognito.user-pool-id}")
+    private String userPoolId;
+
+    @Value("${aws.cognito.client-id}")
+    private String clientId;
+
+    @Value("${aws.cognito.client-secret}")
+    private String clientSecret;
+
     @Bean
     public CognitoIdentityProviderClient cognitoClient() {
         return CognitoIdentityProviderClient.builder()
